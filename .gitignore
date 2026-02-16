@@ -1,2 +1,6 @@
 caddy
 .idea/
+*.png
+*.txt
+*.md.bak
+page-snapshot.md
