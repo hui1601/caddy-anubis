@@ -9,7 +9,7 @@ require (
 	go.uber.org/zap/exp v0.3.0
 )
 
-replace github.com/TecharoHQ/anubis => github.com/hui1601/anubis v1.24.0-fixed3
+replace github.com/TecharoHQ/anubis => github.com/hui1601/anubis v1.24.0-embed
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20251209175733-2a1774d88802.1 // indirect
