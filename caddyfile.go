@@ -3,7 +3,6 @@ package caddyanubis
 import (
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
@@ -50,6 +49,9 @@ func parseCaddyfile(h httpcaddyfile.Helper) (caddyhttp.MiddlewareHandler, error)
 //	    use_simplified_explanation
 //	    forced_language      <lang>
 //	    target               <url>
+//	    target_host          <host>
+//	    target_sni           <sni>
+//	    target_insecure_skip_verify
 //	    log_level            <level>
 //	}
 func (m *AnubisMiddleware) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
@@ -133,7 +135,7 @@ func (m *AnubisMiddleware) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 			if !d.NextArg() {
 				return d.ArgErr()
 			}
-			dur, err := time.ParseDuration(d.Val())
+			dur, err := caddy.ParseDuration(d.Val())
 			if err != nil {
 				return d.Errf("invalid og_expiry_time: %v", err)
 			}
@@ -205,6 +207,21 @@ func (m *AnubisMiddleware) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 				return d.ArgErr()
 			}
 			m.Target = d.Val()
+
+		case "target_host":
+			if !d.NextArg() {
+				return d.ArgErr()
+			}
+			m.TargetHost = d.Val()
+
+		case "target_sni":
+			if !d.NextArg() {
+				return d.ArgErr()
+			}
+			m.TargetSNI = d.Val()
+
+		case "target_insecure_skip_verify":
+			m.TargetInsecureSkipVerify = true
 
 		case "log_level":
 			if !d.NextArg() {
