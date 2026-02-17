@@ -1,5 +1,9 @@
 # caddy-anubis
 
+> **Warning: Not Production Ready**
+>
+> This module has no unit or integration tests. Use at your own risk. Contributions and testing are welcome.
+
 A [Caddy](https://caddyserver.com) module that integrates [Anubis](https://github.com/TecharoHQ/anubis) proof-of-work bot protection as middleware.
 
 Anubis presents visitors with a lightweight SHA-256 proof-of-work challenge before granting access to your upstream service. Once solved, a JWT cookie is issued and subsequent requests pass through without interruption.
