@@ -15,7 +15,7 @@ Requires [xcaddy](https://github.com/caddyserver/xcaddy):
 ```bash
 xcaddy build \
   --with github.com/hui1601/caddy-anubis \
-  --replace 'github.com/TecharoHQ/anubis=github.com/hui1601/anubis@v1.24.0-embed'
+  --replace 'github.com/TecharoHQ/anubis=github.com/hui1601/anubis@v1.25.0-embed'
 ```
 
 > The `--replace` flag is required because the upstream Anubis module does not ship its embedded static assets in the Go module distribution. The fork at `github.com/hui1601/anubis` includes these assets.
