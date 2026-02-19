@@ -271,8 +271,8 @@ github.com/grpc-ecosystem/grpc-gateway v1.5.0/go.mod h1:RSKVYQBd5MCa4OVpNdGskqpg
 github.com/hashicorp/hcl v1.0.0/go.mod h1:E5yfLk+7swimpb2L/Alb/PJmXilQ/rhwaUYs4T20WEQ=
 github.com/huandu/xstrings v1.5.0 h1:2ag3IFq9ZDANvthTwTiqSSZLjDc+BedvHPAp5tJy2TI=
 github.com/huandu/xstrings v1.5.0/go.mod h1:y5/lhBue+AyNmUVz9RLU9xbLR0o4KIIExikq4ovT0aE=
-github.com/hui1601/anubis v1.24.0-embed h1:DRVzBP4Vsh//fKXq0ZQ0oNh7dj613aTZqbfFYYnnxsk=
-github.com/hui1601/anubis v1.24.0-embed/go.mod h1:i9UdJQ6rJ1ZwciG/WaTPjUKithmaeG9cCtXb+QbU340=
+github.com/hui1601/anubis v1.25.0-embed h1:ROP5AfUfEJC1kYBQXE/s4skbnU0UB9oCISOzHZSEFPk=
+github.com/hui1601/anubis v1.25.0-embed/go.mod h1:i9UdJQ6rJ1ZwciG/WaTPjUKithmaeG9cCtXb+QbU340=
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=

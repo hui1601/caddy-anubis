@@ -3,13 +3,13 @@ module github.com/hui1601/caddy-anubis
 go 1.25
 
 require (
-	github.com/TecharoHQ/anubis v1.24.0
+	github.com/TecharoHQ/anubis v1.25.0
 	github.com/caddyserver/caddy/v2 v2.10.2
 	go.uber.org/zap v1.27.0
 	go.uber.org/zap/exp v0.3.0
 )
 
-replace github.com/TecharoHQ/anubis => github.com/hui1601/anubis v1.24.0-embed
+replace github.com/TecharoHQ/anubis => github.com/hui1601/anubis v1.25.0-embed
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20251209175733-2a1774d88802.1 // indirect
