@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"net"
 	"net/http"
 	"strings"
 	"sync"
@@ -391,9 +392,32 @@ func (m *AnubisMiddleware) Validate() error {
 // the next handler in the chain are logged but cannot be propagated to
 // Caddy's error handling middleware.
 func (m *AnubisMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next caddyhttp.Handler) error {
+	if r.Header.Get("X-Real-Ip") == "" {
+		r.Header.Set("X-Real-Ip", clientIP(r))
+	}
 	ctx := context.WithValue(r.Context(), nextHandlerKey{}, next)
 	m.anubisServer.ServeHTTP(w, r.WithContext(ctx))
 	return nil
+}
+
+// clientIP returns the client's IP address from the request.
+// It prefers X-Real-Ip if already present, then falls back to
+// the first IP in X-Forwarded-For, and finally r.RemoteAddr.
+func clientIP(r *http.Request) string {
+	if xri := r.Header.Get("X-Real-Ip"); xri != "" {
+		return xri
+	}
+	if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
+		if idx := strings.Index(xff, ","); idx != -1 {
+			return strings.TrimSpace(xff[:idx])
+		}
+		return strings.TrimSpace(xff)
+	}
+	host, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return r.RemoteAddr
+	}
+	return host
 }
 
 // Cleanup decrements the global-state refcount. Only when the last

@@ -28,8 +28,6 @@ xcaddy build \
 }
 
 :443 {
-    request_header X-Real-Ip {remote_host}
-
     anubis {
         difficulty 4
     }
@@ -111,7 +109,7 @@ anubis {
 
 ### X-Real-Ip Header
 
-Anubis requires the `X-Real-Ip` header. Add this before the `anubis` directive:
+The module automatically sets the `X-Real-Ip` header from the request's remote address if it is not already present. If you are behind a trusted proxy, set it manually so the correct client IP is used:
 
 ```caddy
 request_header X-Real-Ip {remote_host}
