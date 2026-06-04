@@ -392,26 +392,25 @@ func (m *AnubisMiddleware) Validate() error {
 // the next handler in the chain are logged but cannot be propagated to
 // Caddy's error handling middleware.
 func (m *AnubisMiddleware) ServeHTTP(w http.ResponseWriter, r *http.Request, next caddyhttp.Handler) error {
-	if r.Header.Get("X-Real-Ip") == "" {
-		r.Header.Set("X-Real-Ip", clientIP(r))
-	}
+	// Always overwrite X-Real-Ip with a trusted source. Do not preserve
+	// client-provided values to prevent IP spoofing.
+	r.Header.Set("X-Real-Ip", clientIP(r))
 	ctx := context.WithValue(r.Context(), nextHandlerKey{}, next)
 	m.anubisServer.ServeHTTP(w, r.WithContext(ctx))
 	return nil
 }
 
-// clientIP returns the client's IP address from the request.
-// It prefers X-Real-Ip if already present, then falls back to
-// the first IP in X-Forwarded-For, and finally r.RemoteAddr.
+// clientIP returns the client's IP address from a trusted source.
+// It prefers Caddy's validated client_ip (set when trusted_proxies is
+// configured) and falls back to r.RemoteAddr, which cannot be spoofed
+// by the client but will show the proxy's IP if Caddy is behind one
+// without trusted_proxies configured.
 func clientIP(r *http.Request) string {
-	if xri := r.Header.Get("X-Real-Ip"); xri != "" {
-		return xri
-	}
-	if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
-		if idx := strings.Index(xff, ","); idx != -1 {
-			return strings.TrimSpace(xff[:idx])
-		}
-		return strings.TrimSpace(xff)
+	// Caddy v2.10+ sets this when trusted_proxies / client_ip_headers
+	// is configured. It is the only safe way to obtain the real client
+	// IP behind a proxy.
+	if ip, ok := caddyhttp.GetVar(r.Context(), "client_ip").(string); ok && ip != "" {
+		return ip
 	}
 	host, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {

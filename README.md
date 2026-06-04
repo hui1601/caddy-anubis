@@ -109,11 +109,24 @@ anubis {
 
 ### X-Real-Ip Header
 
-The module automatically sets the `X-Real-Ip` header from the request's remote address if it is not already present. If you are behind a trusted proxy, set it manually so the correct client IP is used:
+The module automatically sets the `X-Real-Ip` header from the request's remote address. **Client-provided headers such as `X-Forwarded-For` or `X-Real-Ip` are ignored to prevent IP spoofing.**
+
+If Caddy is behind a trusted proxy, configure `trusted_proxies` so Caddy validates the real client IP:
 
 ```caddy
-request_header X-Real-Ip {remote_host}
+:443 {
+    trusted_proxies 10.0.0.0/8
+    client_ip_headers X-Forwarded-For
+
+    anubis {
+        difficulty 4
+    }
+
+    reverse_proxy localhost:8080
+}
 ```
+
+Without `trusted_proxies`, the header will contain the proxy's IP address. This is safe but may affect IP-based rate limiting and JWT binding.
 
 ### Cookie Security over HTTP
 
